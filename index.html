@@ -8,25 +8,26 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --neon: #39ff14;
-      --neon2: #00f5d4;
-      --dark: #050a0e;
-      --card: #0d1f2d;
+      --neon:   #39ff14;
+      --neon2:  #00f5d4;
+      --dark:   #050a0e;
       --accent: #ff3c6f;
     }
 
+    /* ── FIX: overflow-y scroll + padding so button is reachable ── */
     body {
       font-family: 'DM Sans', sans-serif;
       background: var(--dark);
       min-height: 100vh;
       display: flex;
-      align-items: center;
+      align-items: flex-start;
       justify-content: center;
-      overflow: hidden;
+      overflow-y: auto;
+      overflow-x: hidden;
       position: relative;
+      padding: 40px 16px 60px;
     }
 
-    /* animated background grid */
     body::before {
       content: '';
       position: fixed;
@@ -37,256 +38,202 @@
       background-size: 50px 50px;
       animation: gridMove 20s linear infinite;
       pointer-events: none;
+      z-index: 0;
     }
 
     @keyframes gridMove {
-      0% { transform: translateY(0); }
-      100% { transform: translateY(50px); }
+      from { transform: translateY(0); }
+      to   { transform: translateY(50px); }
     }
 
-    /* floating orbs */
     .orb {
-      position: fixed;
-      border-radius: 50%;
-      filter: blur(80px);
-      opacity: 0.15;
+      position: fixed; border-radius: 50%;
+      filter: blur(80px); opacity: 0.15;
       animation: float 8s ease-in-out infinite;
-      pointer-events: none;
+      pointer-events: none; z-index: 0;
     }
-    .orb1 { width: 400px; height: 400px; background: var(--neon); top: -100px; left: -100px; animation-delay: 0s; }
-    .orb2 { width: 300px; height: 300px; background: var(--accent); bottom: -80px; right: -80px; animation-delay: 3s; }
-    .orb3 { width: 200px; height: 200px; background: var(--neon2); top: 50%; left: 50%; animation-delay: 5s; }
+    .orb1 { width:400px; height:400px; background:var(--neon);   top:-100px; left:-100px; }
+    .orb2 { width:300px; height:300px; background:var(--accent); bottom:-80px; right:-80px; animation-delay:3s; }
+    .orb3 { width:200px; height:200px; background:var(--neon2);  top:40%; left:50%; animation-delay:5s; }
 
     @keyframes float {
-      0%, 100% { transform: translateY(0) scale(1); }
-      50% { transform: translateY(-30px) scale(1.05); }
+      0%,100% { transform: translateY(0) scale(1); }
+      50%      { transform: translateY(-30px) scale(1.05); }
     }
 
     .wrapper {
-      position: relative;
-      z-index: 10;
-      width: 420px;
+      position: relative; z-index: 10;
+      width: 100%; max-width: 420px;
     }
 
-    /* logo area */
     .logo-area {
-      text-align: center;
-      margin-bottom: 32px;
+      text-align: center; margin-bottom: 28px;
       animation: slideDown 0.8s cubic-bezier(.22,1,.36,1) both;
     }
 
     @keyframes slideDown {
-      from { opacity: 0; transform: translateY(-40px); }
-      to   { opacity: 1; transform: translateY(0); }
+      from { opacity:0; transform:translateY(-40px); }
+      to   { opacity:1; transform:translateY(0); }
     }
 
     .logo-icon {
-      font-size: 56px;
-      display: block;
-      margin-bottom: 8px;
+      font-size: 50px; display: block; margin-bottom: 6px;
       animation: pulse 2s ease-in-out infinite;
     }
 
     @keyframes pulse {
-      0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.08); }
+      0%,100% { transform: scale(1); }
+      50%      { transform: scale(1.08); }
     }
 
     .logo-title {
       font-family: 'Bebas Neue', sans-serif;
-      font-size: 52px;
-      letter-spacing: 4px;
+      font-size: 48px; letter-spacing: 4px;
       background: linear-gradient(135deg, var(--neon), var(--neon2));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      line-height: 1;
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text; line-height: 1;
     }
 
     .logo-sub {
-      color: rgba(255,255,255,0.4);
-      font-size: 13px;
-      letter-spacing: 3px;
-      text-transform: uppercase;
-      margin-top: 4px;
+      color: rgba(255,255,255,0.4); font-size: 12px;
+      letter-spacing: 3px; text-transform: uppercase; margin-top: 4px;
     }
 
-    /* card */
     .card {
-      background: rgba(13, 31, 45, 0.8);
+      background: rgba(13,31,45,0.8);
       border: 1px solid rgba(57,255,20,0.15);
-      border-radius: 24px;
-      padding: 36px;
+      border-radius: 24px; padding: 32px;
       backdrop-filter: blur(20px);
       box-shadow: 0 0 60px rgba(57,255,20,0.05), 0 30px 60px rgba(0,0,0,0.5);
       animation: slideUp 0.8s cubic-bezier(.22,1,.36,1) 0.2s both;
     }
 
     @keyframes slideUp {
-      from { opacity: 0; transform: translateY(40px); }
-      to   { opacity: 1; transform: translateY(0); }
+      from { opacity:0; transform:translateY(40px); }
+      to   { opacity:1; transform:translateY(0); }
     }
 
     .section-label {
-      font-size: 11px;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      color: var(--neon);
-      margin-bottom: 8px;
-      margin-top: 20px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
+      font-size: 11px; letter-spacing: 2px; text-transform: uppercase;
+      color: var(--neon); margin-bottom: 8px; margin-top: 18px;
+      display: flex; align-items: center; gap: 8px;
     }
-
     .section-label::after {
-      content: '';
-      flex: 1;
-      height: 1px;
-      background: rgba(57,255,20,0.2);
+      content:''; flex:1; height:1px; background:rgba(57,255,20,0.2);
     }
 
-    .input-group {
-      position: relative;
-      margin-bottom: 12px;
-    }
+    .input-group { position: relative; margin-bottom: 4px; }
 
     .input-group .icon {
-      position: absolute;
-      left: 14px;
-      top: 50%;
-      transform: translateY(-50%);
-      font-size: 16px;
-      pointer-events: none;
+      position: absolute; left: 14px; top: 14px;
+      font-size: 15px; pointer-events: none; z-index: 1;
     }
+
+    /* ── ERROR MESSAGE ── */
+    .err-msg {
+      font-size: 11px; color: var(--accent);
+      margin: 3px 0 6px 4px;
+      min-height: 15px; display: block;
+      opacity: 0; transform: translateY(-4px);
+      transition: opacity 0.3s, transform 0.3s;
+    }
+    .err-msg.visible { opacity: 1; transform: translateY(0); }
 
     input {
       width: 100%;
       background: rgba(255,255,255,0.04);
       border: 1px solid rgba(255,255,255,0.08);
       border-radius: 12px;
-      padding: 13px 14px 13px 42px;
-      color: white;
-      font-family: 'DM Sans', sans-serif;
-      font-size: 14px;
-      transition: all 0.3s ease;
-      outline: none;
+      padding: 12px 14px 12px 42px;
+      color: white; font-family: 'DM Sans', sans-serif;
+      font-size: 14px; transition: all 0.3s; outline: none;
     }
-
     input::placeholder { color: rgba(255,255,255,0.25); }
-
     input:focus {
       border-color: var(--neon);
       background: rgba(57,255,20,0.04);
       box-shadow: 0 0 0 3px rgba(57,255,20,0.08);
     }
 
-    .row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
+    /* ── VALIDATION STATES ── */
+    input.input-error {
+      border-color: var(--accent) !important;
+      background: rgba(255,60,111,0.06) !important;
+      box-shadow: 0 0 0 3px rgba(255,60,111,0.1) !important;
+      animation: shake 0.4s ease;
+    }
+    input.input-ok {
+      border-color: var(--neon);
+      background: rgba(57,255,20,0.04);
     }
 
-    /* progress bar hint */
+    @keyframes shake {
+      0%,100% { transform: translateX(0); }
+      20%      { transform: translateX(-6px); }
+      40%      { transform: translateX(6px); }
+      60%      { transform: translateX(-4px); }
+      80%      { transform: translateX(4px); }
+    }
+
+    .row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
     .tip {
-      text-align: center;
-      color: rgba(255,255,255,0.3);
-      font-size: 12px;
-      margin: 20px 0 24px;
+      text-align: center; color: rgba(255,255,255,0.3);
+      font-size: 12px; margin: 16px 0 20px;
     }
 
-    /* CTA button */
     .btn {
-      width: 100%;
-      padding: 16px;
-      border: none;
-      border-radius: 14px;
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 20px;
-      letter-spacing: 3px;
-      cursor: pointer;
-      position: relative;
-      overflow: hidden;
+      width: 100%; padding: 15px; border: none;
+      border-radius: 14px; font-family: 'Bebas Neue', sans-serif;
+      font-size: 20px; letter-spacing: 3px; cursor: pointer;
+      position: relative; overflow: hidden;
       background: linear-gradient(135deg, var(--neon), var(--neon2));
       color: #050a0e;
       transition: transform 0.2s, box-shadow 0.2s;
       box-shadow: 0 0 30px rgba(57,255,20,0.3);
     }
-
-    .btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 0 50px rgba(57,255,20,0.5);
-    }
-
+    .btn:hover { transform: translateY(-2px); box-shadow: 0 0 50px rgba(57,255,20,0.5); }
     .btn:active { transform: translateY(0); }
-
     .btn::after {
-      content: '';
-      position: absolute;
-      inset: 0;
+      content:''; position:absolute; inset:0;
       background: linear-gradient(135deg, transparent 40%, rgba(255,255,255,0.2));
       pointer-events: none;
     }
-
-    /* shimmer on btn */
     .btn::before {
-      content: '';
-      position: absolute;
-      top: 0; left: -100%;
-      width: 60%;
-      height: 100%;
+      content:''; position:absolute; top:0; left:-100%;
+      width:60%; height:100%;
       background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
       animation: shimmer 3s infinite;
     }
-
     @keyframes shimmer {
-      0% { left: -100%; }
-      100% { left: 200%; }
+      0%   { left:-100%; }
+      100% { left:200%; }
     }
 
     .stats-row {
-      display: flex;
-      justify-content: center;
-      gap: 24px;
-      margin-top: 24px;
-      padding-top: 20px;
+      display: flex; justify-content: center; gap: 24px;
+      margin-top: 20px; padding-top: 18px;
       border-top: 1px solid rgba(255,255,255,0.06);
     }
-
-    .stat-item {
-      text-align: center;
-    }
-
+    .stat-item { text-align: center; }
     .stat-item span:first-child {
-      display: block;
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 22px;
-      color: var(--neon);
+      display: block; font-family: 'Bebas Neue', sans-serif;
+      font-size: 20px; color: var(--neon);
     }
-
     .stat-item span:last-child {
-      font-size: 10px;
-      color: rgba(255,255,255,0.3);
-      letter-spacing: 1px;
-      text-transform: uppercase;
+      font-size: 10px; color: rgba(255,255,255,0.3);
+      letter-spacing: 1px; text-transform: uppercase;
     }
 
-    /* toast notification */
     .toast {
-      position: fixed;
-      bottom: 30px;
-      left: 50%;
+      position: fixed; bottom: 30px; left: 50%;
       transform: translateX(-50%) translateY(100px);
-      background: var(--accent);
-      color: white;
-      padding: 12px 24px;
-      border-radius: 50px;
-      font-size: 13px;
-      font-weight: 500;
+      background: var(--accent); color: white;
+      padding: 12px 24px; border-radius: 50px;
+      font-size: 13px; font-weight: 500;
       transition: transform 0.4s cubic-bezier(.22,1,.36,1);
-      z-index: 999;
+      z-index: 999; white-space: nowrap;
     }
-
     .toast.show { transform: translateX(-50%) translateY(0); }
   </style>
 </head>
@@ -308,34 +255,40 @@
     <div class="section-label">Identity</div>
     <div class="input-group">
       <span class="icon">👤</span>
-      <input id="i0" placeholder="Your name" />
+      <input id="i0" placeholder="Your name (min 2 letters)" />
+      <span class="err-msg" id="e0"></span>
     </div>
 
     <div class="section-label">Activity</div>
     <div class="row">
       <div class="input-group">
         <span class="icon">👟</span>
-        <input id="i1" placeholder="Steps" type="number" />
+        <input id="i1" placeholder="Steps" type="number" min="0" max="100000"/>
+        <span class="err-msg" id="e1"></span>
       </div>
       <div class="input-group">
         <span class="icon">🔥</span>
-        <input id="i2" placeholder="Calories" type="number" />
+        <input id="i2" placeholder="Calories" type="number" min="0" max="10000"/>
+        <span class="err-msg" id="e2"></span>
       </div>
     </div>
     <div class="input-group">
       <span class="icon">⏱️</span>
-      <input id="i3" placeholder="Duration (minutes)" type="number" />
+      <input id="i3" placeholder="Duration (minutes)" type="number" min="0" max="1440"/>
+      <span class="err-msg" id="e3"></span>
     </div>
 
     <div class="section-label">Body</div>
     <div class="row">
       <div class="input-group">
         <span class="icon">⚖️</span>
-        <input id="i4" placeholder="Weight (kg)" type="number" />
+        <input id="i4" placeholder="Weight (kg)" type="number" min="1" max="500"/>
+        <span class="err-msg" id="e4"></span>
       </div>
       <div class="input-group">
         <span class="icon">📏</span>
-        <input id="i5" placeholder="Height (m)" type="number" />
+        <input id="i5" placeholder="Height (m) e.g 1.75" type="number" min="0.5" max="3" step="0.01"/>
+        <span class="err-msg" id="e5"></span>
       </div>
     </div>
 
@@ -344,49 +297,86 @@
     <button class="btn" onclick="enterDashboard()">Launch Dashboard →</button>
 
     <div class="stats-row">
-      <div class="stat-item">
-        <span>10K</span>
-        <span>Step Goal</span>
-      </div>
-      <div class="stat-item">
-        <span>500</span>
-        <span>Cal Goal</span>
-      </div>
-      <div class="stat-item">
-        <span>7</span>
-        <span>Day Tracking</span>
-      </div>
+      <div class="stat-item"><span>10K</span><span>Step Goal</span></div>
+      <div class="stat-item"><span>500</span><span>Cal Goal</span></div>
+      <div class="stat-item"><span>7</span><span>Day Tracking</span></div>
     </div>
   </div>
 </div>
 
-<div class="toast" id="toast">⚠️ Please fill in all fields!</div>
+<div class="toast" id="toast"></div>
 
 <script>
-function enterDashboard() {
-  const vals = ['i0','i1','i2','i3','i4','i5'].map(id => document.getElementById(id).value);
+// ── VALIDATION RULES ──────────────────────────────
+const rules = [
+  { id:'i0', err:'e0', check: v => v.trim().length >= 2,               msg:'⚠️ Name must be at least 2 letters' },
+  { id:'i1', err:'e1', check: v => v !== '' && +v >= 0 && +v <= 100000, msg:'⚠️ Steps: 0 to 100,000 only' },
+  { id:'i2', err:'e2', check: v => v !== '' && +v >= 0 && +v <= 10000,  msg:'⚠️ Calories: 0 to 10,000 only' },
+  { id:'i3', err:'e3', check: v => v !== '' && +v >= 0 && +v <= 1440,   msg:'⚠️ Duration: 0 to 1440 minutes' },
+  { id:'i4', err:'e4', check: v => v !== '' && +v >= 1 && +v <= 500,    msg:'⚠️ Weight: 1 to 500 kg' },
+  { id:'i5', err:'e5', check: v => v !== '' && +v >= 0.5 && +v <= 3.0,  msg:'⚠️ Height: 0.5 to 3.0 meters' }
+];
 
-  if (vals.some(v => v.trim() === '')) {
-    const toast = document.getElementById('toast');
-    toast.classList.add('show');
-    setTimeout(() => toast.classList.remove('show'), 3000);
+function setError(rule, msg) {
+  const inp = document.getElementById(rule.id);
+  const err = document.getElementById(rule.err);
+  inp.classList.add('input-error');
+  inp.classList.remove('input-ok');
+  err.textContent = msg;
+  err.classList.add('visible');
+}
+
+function clearError(rule) {
+  const inp = document.getElementById(rule.id);
+  const err = document.getElementById(rule.err);
+  inp.classList.remove('input-error');
+  inp.classList.add('input-ok');
+  err.textContent = '';
+  err.classList.remove('visible');
+}
+
+// Live validation — clears error as user types
+rules.forEach(rule => {
+  document.getElementById(rule.id).addEventListener('input', () => {
+    const val = document.getElementById(rule.id).value;
+    if (rule.check(val)) clearError(rule);
+  });
+});
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+function enterDashboard() {
+  let hasError = false;
+
+  rules.forEach(rule => {
+    const val = document.getElementById(rule.id).value;
+    if (!rule.check(val)) { setError(rule, rule.msg); hasError = true; }
+    else clearError(rule);
+  });
+
+  if (hasError) {
+    showToast('⚠️ Please fix the errors above!');
     return;
   }
 
   const data = {
-    name: vals[0],
-    steps: +vals[1],
-    calories: +vals[2],
-    duration: +vals[3],
-    weight: +vals[4],
-    height: +vals[5]
+    name:     document.getElementById('i0').value.trim(),
+    steps:    +document.getElementById('i1').value,
+    calories: +document.getElementById('i2').value,
+    duration: +document.getElementById('i3').value,
+    weight:   +document.getElementById('i4').value,
+    height:   +document.getElementById('i5').value
   };
 
   localStorage.setItem('userData', JSON.stringify(data));
   window.location.href = 'dashboard.html';
 }
 
-// Enter key support
 document.addEventListener('keydown', e => {
   if (e.key === 'Enter') enterDashboard();
 });
