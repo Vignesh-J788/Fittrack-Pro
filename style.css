@@ -1,0 +1,423 @@
+/* ============================================
+   FITTRACK PRO — style.css
+   ============================================ */
+
+/* ── RESET & ROOT VARIABLES ─────────────────── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --neon:   #39ff14;   /* bright green */
+  --neon2:  #00f5d4;   /* cyan */
+  --dark:   #050a0e;   /* near black background */
+  --card:   #0d1f2d;   /* dark blue card */
+  --accent: #ff3c6f;   /* pink/red */
+  --purple: #a855f7;   /* purple */
+  --orange: #fb923c;   /* orange */
+}
+
+/* ── BASE BODY ───────────────────────────────── */
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--dark);
+  color: white;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ── ANIMATED GRID BACKGROUND ───────────────── */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(57,255,20,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(57,255,20,0.03) 1px, transparent 1px);
+  background-size: 50px 50px;
+  animation: gridMove 20s linear infinite;
+  pointer-events: none;
+  z-index: 0;
+}
+
+@keyframes gridMove {
+  from { transform: translateY(0); }
+  to   { transform: translateY(50px); }
+}
+
+/* ── BACKGROUND ORBS ─────────────────────────── */
+.orb {
+  position: fixed;
+  border-radius: 50%;
+  filter: blur(100px);
+  opacity: 0.08;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.orb1 {
+  width: 500px; height: 500px;
+  background: var(--neon);
+  top: -150px; left: -150px;
+}
+
+.orb2 {
+  width: 400px; height: 400px;
+  background: var(--accent);
+  bottom: -100px; right: -100px;
+}
+
+/* ── STICKY HEADER ───────────────────────────── */
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 24px 40px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  backdrop-filter: blur(10px);
+  background: rgba(5,10,14,0.8);
+}
+
+.header-logo {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 28px;
+  letter-spacing: 3px;
+  background: linear-gradient(135deg, var(--neon), var(--neon2));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.header-greeting {
+  font-size: 14px;
+  color: rgba(255,255,255,0.5);
+}
+
+.header-greeting span {
+  color: white;
+  font-weight: 600;
+}
+
+.back-btn {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  color: rgba(255,255,255,0.6);
+  padding: 8px 18px;
+  border-radius: 50px;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: 'DM Sans', sans-serif;
+}
+
+.back-btn:hover {
+  background: rgba(57,255,20,0.1);
+  border-color: var(--neon);
+  color: var(--neon);
+}
+
+/* ── MAIN CONTENT AREA ───────────────────────── */
+.main {
+  position: relative;
+  z-index: 10;
+  padding: 32px 40px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* ── SECTION TITLES ──────────────────────────── */
+.section-title {
+  font-size: 11px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.3);
+  margin-bottom: 16px;
+  margin-top: 32px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.section-title::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: rgba(255,255,255,0.06);
+}
+
+/* ── FADE IN ANIMATION ───────────────────────── */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── HERO STATS ROW ──────────────────────────── */
+.hero-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.hero-card {
+  background: rgba(13,31,45,0.7);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 20px;
+  padding: 24px;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.3s, border-color 0.3s;
+  animation: fadeIn 0.6s ease both;
+  backdrop-filter: blur(10px);
+}
+
+.hero-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(255,255,255,0.15);
+}
+
+/* Colored top border per card */
+.hero-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+}
+
+.hero-card.steps::before    { background: linear-gradient(90deg, var(--neon), var(--neon2)); }
+.hero-card.calories::before { background: linear-gradient(90deg, var(--accent), var(--orange)); }
+.hero-card.bmi::before      { background: linear-gradient(90deg, var(--purple), #ec4899); }
+.hero-card.duration::before { background: linear-gradient(90deg, var(--neon2), var(--purple)); }
+
+/* Staggered animation delays */
+.hero-card:nth-child(1) { animation-delay: 0.1s; }
+.hero-card:nth-child(2) { animation-delay: 0.2s; }
+.hero-card:nth-child(3) { animation-delay: 0.3s; }
+.hero-card:nth-child(4) { animation-delay: 0.4s; }
+
+.card-icon  { font-size: 28px; margin-bottom: 12px; }
+.card-label {
+  font-size: 11px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.35);
+  margin-bottom: 6px;
+}
+
+.card-value {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 42px;
+  line-height: 1;
+  letter-spacing: 1px;
+}
+
+/* Card value colors */
+.steps.hero-card    .card-value { color: var(--neon); }
+.calories.hero-card .card-value { color: var(--accent); }
+.bmi.hero-card      .card-value { color: var(--purple); }
+.duration.hero-card .card-value { color: var(--neon2); }
+
+.card-sub { font-size: 12px; color: rgba(255,255,255,0.3); margin-top: 4px; }
+
+/* ── PROGRESS RINGS ROW ──────────────────────── */
+.rings-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.ring-card {
+  background: rgba(13,31,45,0.7);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 20px;
+  padding: 28px;
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  backdrop-filter: blur(10px);
+  transition: transform 0.3s;
+  animation: fadeIn 0.6s ease both;
+}
+
+.ring-card:nth-child(1) { animation-delay: 0.5s; }
+.ring-card:nth-child(2) { animation-delay: 0.6s; }
+.ring-card:hover        { transform: translateY(-4px); }
+
+/* SVG Ring */
+.ring-wrap { position: relative; width: 130px; height: 130px; flex-shrink: 0; }
+.ring-svg  { width: 130px; height: 130px; transform: rotate(-90deg); }
+.ring-bg   { fill: none; stroke: rgba(255,255,255,0.06); stroke-width: 10; }
+
+.ring-fill {
+  fill: none;
+  stroke-width: 10;
+  stroke-linecap: round;
+  transition: stroke-dashoffset 1.5s cubic-bezier(.22,1,.36,1);
+}
+
+.ring-center {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.ring-number {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 28px;
+  line-height: 1;
+}
+
+.ring-pct   { font-size: 11px; color: rgba(255,255,255,0.4); letter-spacing: 1px; }
+.ring-info  { flex: 1; }
+
+.ring-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 26px;
+  letter-spacing: 2px;
+  margin-bottom: 6px;
+}
+
+.ring-remain { font-size: 13px; color: rgba(255,255,255,0.4); margin-bottom: 16px; }
+
+.comment-badge {
+  display: inline-block;
+  padding: 6px 14px;
+  border-radius: 50px;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.steps-badge { background: rgba(57,255,20,0.12);  color: var(--neon);   border: 1px solid rgba(57,255,20,0.2); }
+.cal-badge   { background: rgba(255,60,111,0.12); color: var(--accent); border: 1px solid rgba(255,60,111,0.2); }
+
+/* ── GRAPHS ROW ──────────────────────────────── */
+.graphs-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.graph-card {
+  background: rgba(13,31,45,0.7);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 20px;
+  padding: 24px;
+  backdrop-filter: blur(10px);
+  animation: fadeIn 0.6s ease both;
+}
+
+.graph-card:nth-child(1) { animation-delay: 0.7s; }
+.graph-card:nth-child(2) { animation-delay: 0.8s; }
+
+.graph-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 20px;
+  letter-spacing: 2px;
+  color: rgba(255,255,255,0.7);
+  margin-bottom: 16px;
+}
+
+/* ── BOTTOM ROW ──────────────────────────────── */
+.bottom-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+/* Streak Card */
+.streak-card {
+  background: linear-gradient(135deg, rgba(251,146,60,0.15), rgba(239,68,68,0.1));
+  border: 1px solid rgba(251,146,60,0.2);
+  border-radius: 20px;
+  padding: 28px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  backdrop-filter: blur(10px);
+  animation: fadeIn 0.6s ease 0.9s both;
+}
+
+.streak-fire {
+  font-size: 52px;
+  animation: fire 1.5s ease-in-out infinite;
+}
+
+@keyframes fire {
+  0%, 100% { transform: scale(1) rotate(-3deg); }
+  50%       { transform: scale(1.1) rotate(3deg); }
+}
+
+.streak-num {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 64px;
+  color: var(--orange);
+  line-height: 1;
+}
+
+.streak-label {
+  font-size: 12px;
+  color: rgba(255,255,255,0.4);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+/* BMI Card */
+.bmi-card {
+  background: rgba(13,31,45,0.7);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 20px;
+  padding: 28px;
+  backdrop-filter: blur(10px);
+  animation: fadeIn 0.6s ease 1s both;
+}
+
+.bmi-card-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 20px;
+  letter-spacing: 2px;
+  color: rgba(255,255,255,0.7);
+  margin-bottom: 16px;
+}
+
+.bmi-bar-track {
+  height: 10px;
+  background: rgba(255,255,255,0.06);
+  border-radius: 50px;
+  overflow: hidden;
+  margin-bottom: 8px;
+}
+
+.bmi-bar-fill {
+  height: 100%;
+  border-radius: 50px;
+  background: linear-gradient(90deg, var(--neon2), var(--purple));
+  transition: width 1.5s cubic-bezier(.22,1,.36,1);
+}
+
+.bmi-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 10px;
+  color: rgba(255,255,255,0.25);
+  letter-spacing: 1px;
+}
+
+.bmi-status {
+  margin-top: 14px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border-radius: 50px;
+  font-size: 13px;
+}
