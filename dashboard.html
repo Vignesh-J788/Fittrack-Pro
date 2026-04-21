@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <title>FitTrack Pro — Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --neon: #39ff14;
+      --neon2: #00f5d4;
+      --dark: #050a0e;
+      --card: #0d1f2d;
+      --accent: #ff3c6f;
+      --purple: #a855f7;
+      --orange: #fb923c;
+    }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--dark);
+      color: white;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* animated background */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(57,255,20,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(57,255,20,0.03) 1px, transparent 1px);
+      background-size: 50px 50px;
+      animation: gridMove 20s linear infinite;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    @keyframes gridMove {
+      from { transform: translateY(0); }
+      to { transform: translateY(50px); }
+    }
+
+    .orb {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(100px);
+      opacity: 0.08;
+      pointer-events: none;
+      z-index: 0;
+    }
+    .orb1 { width: 500px; height: 500px; background: var(--neon); top: -150px; left: -150px; }
+    .orb2 { width: 400px; height: 400px; background: var(--accent); bottom: -100px; right: -100px; }
+
+    /* HEADER */
+    .header {
+      position: relative;
+      z-index: 10;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 24px 40px;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      backdrop-filter: blur(10px);
+      background: rgba(5,10,14,0.8);
+      position: sticky;
+      top: 0;
+    }
+
+    .header-logo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 28px;
+      letter-spacing: 3px;
+      background: linear-gradient(135deg, var(--neon), var(--neon2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .header-greeting {
+      font-size: 14px;
+      color: rgba(255,255,255,0.5);
+    }
+
+    .header-greeting span {
+      color: white;
+      font-weight: 600;
+    }
+
+    .back-btn {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      color: rgba(255,255,255,0.6);
+      padding: 8px 18px;
+      border-radius: 50px;
+      font-size: 13px;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-family: 'DM Sans', sans-serif;
+    }
+
+    .back-btn:hover {
+      background: rgba(57,255,20,0.1);
+      border-color: var(--neon);
+      color: var(--neon);
+    }
+
+    /* MAIN */
+    .main {
+      position: relative;
+      z-index: 10;
+      padding: 32px 40px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    /* SECTION TITLE */
+    .section-title {
+      font-size: 11px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.3);
+      margin-bottom: 16px;
+      margin-top: 32px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .section-title::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: rgba(255,255,255,0.06);
+    }
+
+    /* HERO STATS ROW */
+    .hero-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .hero-card {
+      background: rgba(13,31,45,0.7);
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 20px;
+      padding: 24px;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.3s, border-color 0.3s;
+      animation: fadeIn 0.6s ease both;
+      backdrop-filter: blur(10px);
+    }
+
+    .hero-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(255,255,255,0.15);
+    }
+
+    .hero-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+    }
+
+    .hero-card.steps::before { background: linear-gradient(90deg, var(--neon), var(--neon2)); }
+    .hero-card.calories::before { background: linear-gradient(90deg, var(--accent), var(--orange)); }
+    .hero-card.bmi::before { background: linear-gradient(90deg, var(--purple), #ec4899); }
+    .hero-card.duration::before { background: linear-gradient(90deg, var(--neon2), var(--purple)); }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .hero-card:nth-child(1) { animation-delay: 0.1s; }
+    .hero-card:nth-child(2) { animation-delay: 0.2s; }
+    .hero-card:nth-child(3) { animation-delay: 0.3s; }
+    .hero-card:nth-child(4) { animation-delay: 0.4s; }
+
+    .card-icon {
+      font-size: 28px;
+      margin-bottom: 12px;
+    }
+
+    .card-label {
+      font-size: 11px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.35);
+      margin-bottom: 6px;
+    }
+
+    .card-value {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 42px;
+      line-height: 1;
+      letter-spacing: 1px;
+    }
+
+    .steps .card-value { color: var(--neon); }
+    .calories .card-value { color: var(--accent); }
+    .bmi .card-value { color: var(--purple); }
+    .duration .card-value { color: var(--neon2); }
+
+    .card-sub {
+      font-size: 12px;
+      color: rgba(255,255,255,0.3);
+      margin-top: 4px;
+    }
+
+    /* PROGRESS RINGS ROW */
+    .rings-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .ring-card {
+      background: rgba(13,31,45,0.7);
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 20px;
+      padding: 28px;
+      display: flex;
+      align-items: center;
+      gap: 32px;
+      backdrop-filter: blur(10px);
+      transition: transform 0.3s;
+      animation: fadeIn 0.6s ease both;
+    }
+
+    .ring-card:nth-child(1) { animation-delay: 0.5s; }
+    .ring-card:nth-child(2) { animation-delay: 0.6s; }
+
+    .ring-card:hover { transform: translateY(-4px); }
+
+    .ring-wrap {
+      position: relative;
+      width: 130px;
+      height: 130px;
+      flex-shrink: 0;
+    }
+
+    .ring-svg {
+      width: 130px;
+      height: 130px;
+      transform: rotate(-90deg);
+    }
+
+    .ring-bg { fill: none; stroke: rgba(255,255,255,0.06); stroke-width: 10; }
+    .ring-fill { fill: none; stroke-width: 10; stroke-linecap: round; transition: stroke-dashoffset 1.5s cubic-bezier(.22,1,.36,1); }
+
+    .steps-ring .ring-fill { stroke: url(#stepsGrad); }
+    .cal-ring .ring-fill { stroke: url(#calGrad); }
+
+    .ring-center {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .ring-number {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 28px;
+      line-height: 1;
+    }
+
+    .ring-pct {
+      font-size: 11px;
+      color: rgba(255,255,255,0.4);
+      letter-spacing: 1px;
+    }
+
+    .ring-info { flex: 1; }
+
+    .ring-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 26px;
+      letter-spacing: 2px;
+      margin-bottom: 6px;
+    }
+
+    .ring-remain {
+      font-size: 13px;
+      color: rgba(255,255,255,0.4);
+      margin-bottom: 16px;
+    }
+
+    .comment-badge {
+      display: inline-block;
+      padding: 6px 14px;
+      border-radius: 50px;
+      font-size: 13px;
+      font-weight: 500;
+    }
+
+    .steps-badge { background: rgba(57,255,20,0.12); color: var(--neon); border: 1px solid rgba(57,255,20,0.2); }
+    .cal-badge { background: rgba(255,60,111,0.12); color: var(--accent); border: 1px solid rgba(255,60,111,0.2); }
+
+    /* GRAPHS ROW */
+    .graphs-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .graph-card {
+      background: rgba(13,31,45,0.7);
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 20px;
+      padding: 24px;
+      backdrop-filter: blur(10px);
+      animation: fadeIn 0.6s ease both;
+    }
+
+    .graph-card:nth-child(1) { animation-delay: 0.7s; }
+    .graph-card:nth-child(2) { animation-delay: 0.8s; }
+
+    .graph-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 20px;
+      letter-spacing: 2px;
+      color: rgba(255,255,255,0.7);
+      margin-bottom: 16px;
+    }
+
+    /* BOTTOM ROW */
+    .bottom-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    /* STREAK CARD */
+    .streak-card {
+      background: linear-gradient(135deg, rgba(251,146,60,0.15), rgba(239,68,68,0.1));
+      border: 1px solid rgba(251,146,60,0.2);
+      border-radius: 20px;
+      padding: 28px;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      backdrop-filter: blur(10px);
+      animation: fadeIn 0.6s ease 0.9s both;
+    }
+
+    .streak-fire {
+      font-size: 52px;
+      animation: fire 1.5s ease-in-out infinite;
+    }
+
+    @keyframes fire {
+      0%, 100% { transform: scale(1) rotate(-3deg); }
+      50% { transform: scale(1.1) rotate(3deg); }
+    }
+
+    .streak-num {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 64px;
+      color: var(--orange);
+      line-height: 1;
+    }
+
+    .streak-label {
+      font-size: 12px;
+      color: rgba(255,255,255,0.4);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    /* BMI STATUS CARD */
+    .bmi-card {
+      background: rgba(13,31,45,0.7);
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 20px;
+      padding: 28px;
+      backdrop-filter: blur(10px);
+      animation: fadeIn 0.6s ease 1s both;
+    }
+
+    .bmi-card-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 20px;
+      letter-spacing: 2px;
+      color: rgba(255,255,255,0.7);
+      margin-bottom: 16px;
+    }
+
+    .bmi-bar-track {
+      height: 10px;
+      background: rgba(255,255,255,0.06);
+      border-radius: 50px;
+      overflow: hidden;
+      margin-bottom: 8px;
+    }
+
+    .bmi-bar-fill {
+      height: 100%;
+      border-radius: 50px;
+      background: linear-gradient(90deg, var(--neon2), var(--purple));
+      transition: width 1.5s cubic-bezier(.22,1,.36,1);
+    }
+
+    .bmi-labels {
+      display: flex;
+      justify-content: space-between;
+      font-size: 10px;
+      color: rgba(255,255,255,0.25);
+      letter-spacing: 1px;
+    }
+
+    .bmi-status {
+      margin-top: 14px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 16px;
+      border-radius: 50px;
+      font-size: 13px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="orb orb1"></div>
+<div class="orb orb2"></div>
+
+<!-- SVG GRADIENTS -->
+<svg width="0" height="0" style="position:absolute">
+  <defs>
+    <linearGradient id="stepsGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#39ff14"/>
+      <stop offset="100%" style="stop-color:#00f5d4"/>
+    </linearGradient>
+    <linearGradient id="calGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#ff3c6f"/>
+      <stop offset="100%" style="stop-color:#fb923c"/>
+    </linearGradient>
+  </defs>
+</svg>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-logo">⚡ FitTrack Pro</div>
+  <div class="header-greeting">Welcome back, <span id="greetName">—</span> 👋</div>
+  <button class="back-btn" onclick="window.location.href='login.html'">← New Entry</button>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+
+  <!-- HERO STATS -->
+  <div class="section-title">Today's Overview</div>
+  <div class="hero-row">
+    <div class="hero-card steps">
+      <div class="card-icon">👟</div>
+      <div class="card-label">Steps</div>
+      <div class="card-value" id="stepsVal">0</div>
+      <div class="card-sub" id="stepsRemain">— remaining</div>
+    </div>
+    <div class="hero-card calories">
+      <div class="card-icon">🔥</div>
+      <div class="card-label">Calories</div>
+      <div class="card-value" id="calVal">0</div>
+      <div class="card-sub" id="calRemain">— remaining</div>
+    </div>
+    <div class="hero-card bmi">
+      <div class="card-icon">⚖️</div>
+      <div class="card-label">BMI</div>
+      <div class="card-value" id="bmiVal">—</div>
+      <div class="card-sub" id="bmiStatus">—</div>
+    </div>
+    <div class="hero-card duration">
+      <div class="card-icon">⏱️</div>
+      <div class="card-label">Duration</div>
+      <div class="card-value" id="durVal">0</div>
+      <div class="card-sub">minutes active</div>
+    </div>
+  </div>
+
+  <!-- PROGRESS RINGS -->
+  <div class="section-title">Progress Rings</div>
+  <div class="rings-row">
+
+    <div class="ring-card steps-ring">
+      <div class="ring-wrap">
+        <svg class="ring-svg" viewBox="0 0 120 120">
+          <circle class="ring-bg" cx="60" cy="60" r="52"/>
+          <circle class="ring-fill" id="stepsCircle" cx="60" cy="60" r="52"
+            stroke-dasharray="326.7"
+            stroke-dashoffset="326.7"/>
+        </svg>
+        <div class="ring-center">
+          <div class="ring-number" id="stepsPct" style="color:var(--neon)">0%</div>
+          <div class="ring-pct">of goal</div>
+        </div>
+      </div>
+      <div class="ring-info">
+        <div class="ring-title" style="color:var(--neon)">Steps Goal</div>
+        <div class="ring-remain" id="stepsRemain2">0 / 10,000</div>
+        <div class="comment-badge steps-badge" id="stepsComment">Start moving! ⚡</div>
+      </div>
+    </div>
+
+    <div class="ring-card cal-ring">
+      <div class="ring-wrap">
+        <svg class="ring-svg" viewBox="0 0 120 120">
+          <circle class="ring-bg" cx="60" cy="60" r="52"/>
+          <circle class="ring-fill" id="calCircle" cx="60" cy="60" r="52"
+            stroke-dasharray="326.7"
+            stroke-dashoffset="326.7"/>
+        </svg>
+        <div class="ring-center">
+          <div class="ring-number" id="calPct" style="color:var(--accent)">0%</div>
+          <div class="ring-pct">of goal</div>
+        </div>
+      </div>
+      <div class="ring-info">
+        <div class="ring-title" style="color:var(--accent)">Calories Goal</div>
+        <div class="ring-remain" id="calRemain2">0 / 500</div>
+        <div class="comment-badge cal-badge" id="calComment">Start moving! ⚡</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- GRAPHS -->
+  <div class="section-title">7-Day Analytics</div>
+  <div class="graphs-row">
+    <div class="graph-card">
+      <div class="graph-title">📈 Steps History</div>
+      <canvas id="stepsChart" height="150"></canvas>
+    </div>
+    <div class="graph-card">
+      <div class="graph-title">🔥 Calories History</div>
+      <canvas id="calChart" height="150"></canvas>
+    </div>
+  </div>
+
+  <!-- BOTTOM ROW -->
+  <div class="section-title">Highlights</div>
+  <div class="bottom-row">
+
+    <div class="streak-card">
+      <div class="streak-fire">🔥</div>
+      <div>
+        <div class="streak-num" id="streakNum">0</div>
+        <div class="streak-label">Day Streak</div>
+      </div>
+      <div style="margin-left:auto; text-align:right;">
+        <div style="font-size:12px; color:rgba(255,255,255,0.3);">Keep it up!</div>
+        <div style="font-size:11px; color:rgba(255,255,255,0.2); margin-top:4px;">Log daily to grow</div>
+      </div>
+    </div>
+
+    <div class="bmi-card">
+      <div class="bmi-card-title">📊 BMI Scale</div>
+      <div class="bmi-bar-track">
+        <div class="bmi-bar-fill" id="bmiBar" style="width:0%"></div>
+      </div>
+      <div class="bmi-labels">
+        <span>Underweight</span>
+        <span>Normal</span>
+        <span>Overweight</span>
+        <span>Obese</span>
+      </div>
+      <div class="bmi-status" id="bmiStatusBadge">—</div>
+    </div>
+
+  </div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+const stepGoal = 10000;
+const calGoal  = 500;
+
+const user     = JSON.parse(localStorage.getItem('userData')) || {};
+const username = user.name     || 'Guest';
+const steps    = user.steps    || 0;
+const calories = user.calories || 0;
+const duration = user.duration || 0;
+const weight   = user.weight   || 0;
+const height   = user.height   || 1;
+
+// Greeting
+document.getElementById('greetName').textContent = username;
+
+// Hero cards
+document.getElementById('stepsVal').textContent  = steps.toLocaleString();
+document.getElementById('calVal').textContent    = calories.toLocaleString();
+document.getElementById('durVal').textContent    = duration;
+
+document.getElementById('stepsRemain').textContent =
+  Math.max(stepGoal - steps, 0).toLocaleString() + ' steps remaining';
+document.getElementById('calRemain').textContent   =
+  Math.max(calGoal - calories, 0).toLocaleString() + ' cal remaining';
+
+// BMI
+const bmi = +(weight / (height * height)).toFixed(1);
+document.getElementById('bmiVal').textContent = bmi || '—';
+
+function getBmiInfo(b) {
+  if (b < 18.5) return { label: 'Underweight', color: '#38bdf8', pct: 12 };
+  if (b < 25)   return { label: 'Normal ✅',   color: '#39ff14', pct: 38 };
+  if (b < 30)   return { label: 'Overweight',  color: '#fb923c', pct: 65 };
+  return            { label: 'Obese',          color: '#ef4444', pct: 88 };
+}
+
+const bmiInfo = getBmiInfo(bmi);
+document.getElementById('bmiStatus').textContent = bmiInfo.label;
+document.getElementById('bmiStatusBadge').textContent = 'Status: ' + bmiInfo.label;
+document.getElementById('bmiStatusBadge').style.background = bmiInfo.color + '20';
+document.getElementById('bmiStatusBadge').style.color = bmiInfo.color;
+document.getElementById('bmiStatusBadge').style.border = '1px solid ' + bmiInfo.color + '40';
+
+setTimeout(() => {
+  document.getElementById('bmiBar').style.width = bmiInfo.pct + '%';
+  document.getElementById('bmiBar').style.background = `linear-gradient(90deg, ${bmiInfo.color}, ${bmiInfo.color}aa)`;
+}, 300);
+
+// Rings
+function getComment(pct) {
+  if (pct >= 100) return 'Amazing! 🚀';
+  if (pct >= 70)  return 'Awesome! 🔥';
+  if (pct >= 30)  return 'Keep going! 💪';
+  return 'Start moving! ⚡';
+}
+
+const stepPct = Math.min((steps / stepGoal) * 100, 100);
+const calPct  = Math.min((calories / calGoal) * 100, 100);
+
+document.getElementById('stepsPct').textContent   = Math.round(stepPct) + '%';
+document.getElementById('calPct').textContent     = Math.round(calPct) + '%';
+document.getElementById('stepsRemain2').textContent = steps.toLocaleString() + ' / ' + stepGoal.toLocaleString();
+document.getElementById('calRemain2').textContent   = calories + ' / ' + calGoal;
+document.getElementById('stepsComment').textContent = getComment(stepPct);
+document.getElementById('calComment').textContent   = getComment(calPct);
+
+const circumference = 2 * Math.PI * 52; // 326.7
+
+setTimeout(() => {
+  document.getElementById('stepsCircle').style.strokeDashoffset =
+    circumference - (stepPct / 100) * circumference;
+  document.getElementById('calCircle').style.strokeDashoffset =
+    circumference - (calPct / 100) * circumference;
+}, 300);
+
+// History
+const histKey = 'history_' + username;
+let history   = JSON.parse(localStorage.getItem(histKey)) || [];
+history.push({ steps, calories });
+if (history.length > 7) history.shift();
+localStorage.setItem(histKey, JSON.stringify(history));
+
+document.getElementById('streakNum').textContent = history.length;
+
+const labels    = history.map((_, i) => 'Day ' + (i + 1));
+const stepsData = history.map(d => d.steps);
+const calData   = history.map(d => d.calories);
+
+const chartDefaults = {
+  plugins: { legend: { display: false } },
+  scales: {
+    x: { grid: { color: 'rgba(255,255,255,0.04)' }, ticks: { color: 'rgba(255,255,255,0.3)', font: { size: 11 } } },
+    y: { grid: { color: 'rgba(255,255,255,0.04)' }, ticks: { color: 'rgba(255,255,255,0.3)', font: { size: 11 } } }
+  },
+  animation: { duration: 1500, easing: 'easeInOutQuart' }
+};
+
+new Chart(document.getElementById('stepsChart'), {
+  type: 'line',
+  data: {
+    labels,
+    datasets: [{
+      data: stepsData,
+      borderColor: '#39ff14',
+      backgroundColor: 'rgba(57,255,20,0.06)',
+      fill: true,
+      tension: 0.4,
+      pointBackgroundColor: '#39ff14',
+      pointRadius: 4,
+      pointHoverRadius: 7
+    }]
+  },
+  options: chartDefaults
+});
+
+new Chart(document.getElementById('calChart'), {
+  type: 'line',
+  data: {
+    labels,
+    datasets: [{
+      data: calData,
+      borderColor: '#ff3c6f',
+      backgroundColor: 'rgba(255,60,111,0.06)',
+      fill: true,
+      tension: 0.4,
+      pointBackgroundColor: '#ff3c6f',
+      pointRadius: 4,
+      pointHoverRadius: 7
+    }]
+  },
+  options: chartDefaults
+});
+</script>
+</body>
+</html>
