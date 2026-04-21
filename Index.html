@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>FitTrack Pro — Login</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --neon: #39ff14;
+      --neon2: #00f5d4;
+      --dark: #050a0e;
+      --card: #0d1f2d;
+      --accent: #ff3c6f;
+    }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--dark);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      position: relative;
+    }
+
+    /* animated background grid */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(57,255,20,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(57,255,20,0.04) 1px, transparent 1px);
+      background-size: 50px 50px;
+      animation: gridMove 20s linear infinite;
+      pointer-events: none;
+    }
+
+    @keyframes gridMove {
+      0% { transform: translateY(0); }
+      100% { transform: translateY(50px); }
+    }
+
+    /* floating orbs */
+    .orb {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(80px);
+      opacity: 0.15;
+      animation: float 8s ease-in-out infinite;
+      pointer-events: none;
+    }
+    .orb1 { width: 400px; height: 400px; background: var(--neon); top: -100px; left: -100px; animation-delay: 0s; }
+    .orb2 { width: 300px; height: 300px; background: var(--accent); bottom: -80px; right: -80px; animation-delay: 3s; }
+    .orb3 { width: 200px; height: 200px; background: var(--neon2); top: 50%; left: 50%; animation-delay: 5s; }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0) scale(1); }
+      50% { transform: translateY(-30px) scale(1.05); }
+    }
+
+    .wrapper {
+      position: relative;
+      z-index: 10;
+      width: 420px;
+    }
+
+    /* logo area */
+    .logo-area {
+      text-align: center;
+      margin-bottom: 32px;
+      animation: slideDown 0.8s cubic-bezier(.22,1,.36,1) both;
+    }
+
+    @keyframes slideDown {
+      from { opacity: 0; transform: translateY(-40px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .logo-icon {
+      font-size: 56px;
+      display: block;
+      margin-bottom: 8px;
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.08); }
+    }
+
+    .logo-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 52px;
+      letter-spacing: 4px;
+      background: linear-gradient(135deg, var(--neon), var(--neon2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      line-height: 1;
+    }
+
+    .logo-sub {
+      color: rgba(255,255,255,0.4);
+      font-size: 13px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      margin-top: 4px;
+    }
+
+    /* card */
+    .card {
+      background: rgba(13, 31, 45, 0.8);
+      border: 1px solid rgba(57,255,20,0.15);
+      border-radius: 24px;
+      padding: 36px;
+      backdrop-filter: blur(20px);
+      box-shadow: 0 0 60px rgba(57,255,20,0.05), 0 30px 60px rgba(0,0,0,0.5);
+      animation: slideUp 0.8s cubic-bezier(.22,1,.36,1) 0.2s both;
+    }
+
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(40px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .section-label {
+      font-size: 11px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--neon);
+      margin-bottom: 8px;
+      margin-top: 20px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .section-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: rgba(57,255,20,0.2);
+    }
+
+    .input-group {
+      position: relative;
+      margin-bottom: 12px;
+    }
+
+    .input-group .icon {
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 16px;
+      pointer-events: none;
+    }
+
+    input {
+      width: 100%;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 12px;
+      padding: 13px 14px 13px 42px;
+      color: white;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      transition: all 0.3s ease;
+      outline: none;
+    }
+
+    input::placeholder { color: rgba(255,255,255,0.25); }
+
+    input:focus {
+      border-color: var(--neon);
+      background: rgba(57,255,20,0.04);
+      box-shadow: 0 0 0 3px rgba(57,255,20,0.08);
+    }
+
+    .row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    /* progress bar hint */
+    .tip {
+      text-align: center;
+      color: rgba(255,255,255,0.3);
+      font-size: 12px;
+      margin: 20px 0 24px;
+    }
+
+    /* CTA button */
+    .btn {
+      width: 100%;
+      padding: 16px;
+      border: none;
+      border-radius: 14px;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 20px;
+      letter-spacing: 3px;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      background: linear-gradient(135deg, var(--neon), var(--neon2));
+      color: #050a0e;
+      transition: transform 0.2s, box-shadow 0.2s;
+      box-shadow: 0 0 30px rgba(57,255,20,0.3);
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 50px rgba(57,255,20,0.5);
+    }
+
+    .btn:active { transform: translateY(0); }
+
+    .btn::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, transparent 40%, rgba(255,255,255,0.2));
+      pointer-events: none;
+    }
+
+    /* shimmer on btn */
+    .btn::before {
+      content: '';
+      position: absolute;
+      top: 0; left: -100%;
+      width: 60%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+      animation: shimmer 3s infinite;
+    }
+
+    @keyframes shimmer {
+      0% { left: -100%; }
+      100% { left: 200%; }
+    }
+
+    .stats-row {
+      display: flex;
+      justify-content: center;
+      gap: 24px;
+      margin-top: 24px;
+      padding-top: 20px;
+      border-top: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .stat-item {
+      text-align: center;
+    }
+
+    .stat-item span:first-child {
+      display: block;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 22px;
+      color: var(--neon);
+    }
+
+    .stat-item span:last-child {
+      font-size: 10px;
+      color: rgba(255,255,255,0.3);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    /* toast notification */
+    .toast {
+      position: fixed;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: var(--accent);
+      color: white;
+      padding: 12px 24px;
+      border-radius: 50px;
+      font-size: 13px;
+      font-weight: 500;
+      transition: transform 0.4s cubic-bezier(.22,1,.36,1);
+      z-index: 999;
+    }
+
+    .toast.show { transform: translateX(-50%) translateY(0); }
+  </style>
+</head>
+<body>
+
+<div class="orb orb1"></div>
+<div class="orb orb2"></div>
+<div class="orb orb3"></div>
+
+<div class="wrapper">
+  <div class="logo-area">
+    <span class="logo-icon">⚡</span>
+    <div class="logo-title">FitTrack Pro</div>
+    <div class="logo-sub">Your Daily Performance Hub</div>
+  </div>
+
+  <div class="card">
+
+    <div class="section-label">Identity</div>
+    <div class="input-group">
+      <span class="icon">👤</span>
+      <input id="i0" placeholder="Your name" />
+    </div>
+
+    <div class="section-label">Activity</div>
+    <div class="row">
+      <div class="input-group">
+        <span class="icon">👟</span>
+        <input id="i1" placeholder="Steps" type="number" />
+      </div>
+      <div class="input-group">
+        <span class="icon">🔥</span>
+        <input id="i2" placeholder="Calories" type="number" />
+      </div>
+    </div>
+    <div class="input-group">
+      <span class="icon">⏱️</span>
+      <input id="i3" placeholder="Duration (minutes)" type="number" />
+    </div>
+
+    <div class="section-label">Body</div>
+    <div class="row">
+      <div class="input-group">
+        <span class="icon">⚖️</span>
+        <input id="i4" placeholder="Weight (kg)" type="number" />
+      </div>
+      <div class="input-group">
+        <span class="icon">📏</span>
+        <input id="i5" placeholder="Height (m)" type="number" />
+      </div>
+    </div>
+
+    <div class="tip">All data stays on your device — private & secure 🔒</div>
+
+    <button class="btn" onclick="enterDashboard()">Launch Dashboard →</button>
+
+    <div class="stats-row">
+      <div class="stat-item">
+        <span>10K</span>
+        <span>Step Goal</span>
+      </div>
+      <div class="stat-item">
+        <span>500</span>
+        <span>Cal Goal</span>
+      </div>
+      <div class="stat-item">
+        <span>7</span>
+        <span>Day Tracking</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast">⚠️ Please fill in all fields!</div>
+
+<script>
+function enterDashboard() {
+  const vals = ['i0','i1','i2','i3','i4','i5'].map(id => document.getElementById(id).value);
+
+  if (vals.some(v => v.trim() === '')) {
+    const toast = document.getElementById('toast');
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 3000);
+    return;
+  }
+
+  const data = {
+    name: vals[0],
+    steps: +vals[1],
+    calories: +vals[2],
+    duration: +vals[3],
+    weight: +vals[4],
+    height: +vals[5]
+  };
+
+  localStorage.setItem('userData', JSON.stringify(data));
+  window.location.href = 'dashboard.html';
+}
+
+// Enter key support
+document.addEventListener('keydown', e => {
+  if (e.key === 'Enter') enterDashboard();
+});
+</script>
+</body>
+</html>
